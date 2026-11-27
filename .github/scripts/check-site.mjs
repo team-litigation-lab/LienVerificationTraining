@@ -27,6 +27,8 @@ const ctx = { window: {} };
 vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'js/cs-course.js'), 'utf8'), ctx);
 vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'js/cs-decks.js'), 'utf8'), ctx);
 vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'js/cs-practice.js'), 'utf8'), ctx);
+// and each course's own sims (js/<course>-practice.js), which add to window.CS_PRACTICE
+for (const f of fs.readdirSync(path.join(ROOT, 'js')).filter((f) => /-practice\.js$/.test(f) && f !== 'cs-practice.js')) vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'js', f), 'utf8'), ctx);
 const { LN_COURSE, lnEmbed, CS_DECKS, CS_PRACTICE } = ctx.window;
 // Every practice sim is complete: scenarios with a title, brief and steps; every step answerable.
 for (const [k, sim] of Object.entries(CS_PRACTICE || {})) for (const sc of sim.scenarios || []) {
