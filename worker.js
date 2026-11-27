@@ -74,6 +74,11 @@ function adminPassStatus(env) {
   return "MASTER_ADMIN_PASSWORD" + (ignored.length ? ` (had ${ignored.join(", ")}: ignored)` : "") + odd;
 }
 function secretOf(env) { return env.SESSION_SECRET || adminPass(env); }
+/* 🔓 A sign-in lasts until 8 hours with no activity. Every token (an admin's and a trainee's) is good for SESSION_IDLE_HOURS,
+   and an open page renews it every few minutes (/api/auth/refresh, from index.html's renewSession), so closing the tab or the
+   browser signs nobody out and nobody types the password again while they use the course. 8 hours with no page open lets the
+   token run out: that ends the session, as do Sign out and a revoked access (the checks on every request stay). */
+const SESSION_IDLE_HOURS = 8;
 async function makeToken(env, role, subject, hours) {
   const exp = Date.now() + hours * 3600 * 1000;
   const body = `${role}.${encodeURIComponent(subject)}.${exp}`;
@@ -281,7 +286,7 @@ export default {
         await new Promise((r) => setTimeout(r, 400)); // slow down guessing
         const given = normPass(passphrase), want = normPass(adminPass(env));
         if (!given || !want || !safeEqual(given, want)) return json({ error: "Incorrect password" }, 401);
-        return json({ token: await makeToken(env, "a", "admin", 12) });
+        return json({ token: await makeToken(env, "a", "admin", SESSION_IDLE_HOURS) });
       }
       // The trainee's session for a name + batch: their record id (new or legacy form) and token.
       const traineeSession = async (name, batch, id) => {
@@ -299,7 +304,7 @@ export default {
         }
         if (id && id !== chosen && id !== newId && id !== rawId && id !== legacyId) return json({ error: "Name/batch don't match this session" }, 403);
         if (id && id !== chosen && (id === newId || id === rawId || id === legacyId)) { chosen = id; existing = await kv.get(`trainee:${id}`); }
-        return json({ id: chosen, token: await makeToken(env, "t", chosen, 24 * 30), existing: existing ? JSON.parse(existing) : null, batch: canonicalBatch(batch) || String(batch || "").trim() });
+        return json({ id: chosen, token: await makeToken(env, "t", chosen, SESSION_IDLE_HOURS), existing: existing ? JSON.parse(existing) : null, batch: canonicalBatch(batch) || String(batch || "").trim() });
       };
       if (path === "/api/auth/trainee") {
         if (!secure) return json({ error: "not-configured" }, 501);
@@ -335,13 +340,13 @@ export default {
         if (!who) return json({ error: why.r === "signature"
           ? "The LSH Training Portal couldn't be verified (code: bad-signature). Please tell your administrator: the Portal and this program need the same sign-in secret."
           : "This sign-in link has expired. Open the program again from the LSH Training Portal.", code: why.r || "format" }, 401);
-        if (who.system) return json({ admin: true, token: await makeToken(env, "a", "admin", 12) });
+        if (who.system) return json({ admin: true, token: await makeToken(env, "a", "admin", SESSION_IDLE_HOURS) });
         if (who.admin) {
           // Single sign-on for trainers too: an administrator signed in on the Main Portal opens every program as a
           // trainer, with no second password here. Their ticket works once, so a copy of the link (browser history,
           // a forwarded URL) can't sign anyone in again inside its 5 minutes.
           if (!(await useTicketOnce(kv, ticket))) return json({ error: "This sign-in link was already used. Open the program again from the LSH Training Portal.", code: "used" }, 401);
-          return json({ admin: true, name: who.name, token: await makeToken(env, "a", "admin", 12) });
+          return json({ admin: true, name: who.name, token: await makeToken(env, "a", "admin", SESSION_IDLE_HOURS) });
         }
         const res = await traineeSession(who.name, who.batch, "");
         const out = await res.json();
@@ -360,12 +365,11 @@ export default {
       if (!tok) return json({ error: "Sign-in required" }, 401);
 
       /* ---------- a session that is still in use is renewed before it runs out ----------
-         The page asks for a fresh token in the last hours of a valid one (an admin's lasts 12 hours, a trainee's
-         30 days), so a trainer's tab left open through a long day never drops a live call with "Sign-in
-         required". An expired token is never renewed: that still takes a sign-in. */
+         An open page asks for a fresh token every few minutes (each lasts SESSION_IDLE_HOURS, 8 hours), so a session
+         ends only after 8 hours with no page open. An expired token is never renewed: that still takes a sign-in. */
       if (path === "/api/auth/refresh") {
         if (!secure) return json({ token: "" });
-        return json({ token: await makeToken(env, tok.role, tok.id, tok.role === "a" ? 12 : 24 * 30) });
+        return json({ token: await makeToken(env, tok.role, tok.id, SESSION_IDLE_HOURS) });
       }
 
       /* ---------- 🕘 automatic Time In: a trainee's first visit today (see checkIn) ---------- */

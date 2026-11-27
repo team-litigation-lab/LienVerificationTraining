@@ -178,6 +178,19 @@ const DECK = /^https:\/\/www\.canva\.com\/design\/[\w-]+\/[\w-]+\/view\?embed$/,
   const before = await pv.textContent('#pv-count'); await pv.click('#pv-next'); await pv.waitForTimeout(300);
   assert.notEqual(await pv.textContent('#pv-count'), before, 'Next in Presenter view moves the lesson');
 
+  // 🔓 A sign-in lasts until 8 hours with no activity: closing the tab doesn't sign the admin out (a new tab in the same browser
+  // opens signed in), and a token that has run out (8 hours with no page open) brings back the sign-in screen.
+  const actx = a.context();
+  await pv.close(); await a.close();
+  const a2 = await actx.newPage();
+  a2.on('pageerror', (e) => errors.push(e.message));
+  await a2.goto(BASE);
+  await a2.waitForSelector('.day-card');
+  assert.equal(await a2.locator('.nav button:has-text("Admin")').count(), 1, 'a new tab opens with the admin still signed in');
+  await a2.evaluate(() => { const t = localStorage.getItem('ln.adminToken').split('.'); t[2] = String(Date.now() - 60 * 1000); localStorage.setItem('ln.adminToken', t.join('.')); });
+  await a2.reload();
+  await a2.waitForSelector('#gate-apass');
+
   await browser.close();
   if (errors.length) { console.error('Page errors:\n' + errors.join('\n')); process.exit(1); }
   console.log('OK: smoke test passed.');
