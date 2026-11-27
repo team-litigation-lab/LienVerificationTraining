@@ -1,0 +1,184 @@
+// Smoke test in a browser, against .github/scripts/server.mjs started with MASTER_ADMIN_PASSWORD=ci-admin and
+// PORTAL_SSO_SECRET=ci-portal: a trainee arriving from the Portal lands on the dashboard (the banner, with its completion ribbon, over the Day cards); a day opens on its
+// Objectives page; Start plays the day's steps (Training Agenda, each module's Canva deck or Drive video, Day complete);
+// finishing the steps completes the day and is saved; the Topics pop-up and the Slide Map work;
+// a direct visit shows the admin sign-in; the admin password opens Admin with the trainee listed. Every view at desktop and
+// phone width, with no page error and no sideways scroll. The deck and video frames are stubbed (no Canva or Google in CI).
+// Usage: node .github/scripts/smoke.cjs http://localhost:8787/
+const { chromium } = require('playwright');
+const crypto = require('node:crypto');
+const assert = require('node:assert/strict');
+
+const BASE = process.argv[2] || 'http://localhost:8787/';
+const b64u = (b) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const ticket = (t) => { const p = b64u(JSON.stringify(t)); return `${p}.${b64u(crypto.createHmac('sha256', 'portal-sso:ci-portal').update(p).digest())}`; };
+const DECK = /^https:\/\/www\.canva\.com\/design\/[\w-]+\/[\w-]+\/view\?embed$/, VIDEO = /^https:\/\/drive\.google\.com\/file\/d\/[\w-]+\/preview$/;
+
+(async () => {
+  const browser = await chromium.launch();
+  const errors = [];
+  const page = async (viewport) => {
+    const ctx = await browser.newContext({ viewport });
+    await ctx.route(/canva\.com|drive\.google\.com|fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>stub</body></html>' }));
+    const p = await ctx.newPage();
+    p.on('pageerror', (e) => errors.push(e.message));
+    return p;
+  };
+  const noSideScroll = async (p, what) => {
+    const w = await p.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
+    assert.ok(w[0] <= w[1] + 1, `${what} scrolls sideways (${w[0]} > ${w[1]})`);
+  };
+
+  for (const viewport of [{ width: 1366, height: 768 }, { width: 390, height: 844 }]) {
+    const tag = `${viewport.width}px`;
+    const p = await page(viewport);
+    const t = ticket({ first: 'Ada', last: 'Lovelace' + viewport.width, b: 'B100926', exp: Date.now() + 5 * 60 * 1000 });
+    await p.goto(BASE + '?ticket=' + encodeURIComponent(t));
+    await p.waitForSelector('.day-card');
+    assert.ok(!(await p.evaluate(() => location.search)).includes('ticket'), 'the ticket is taken out of the address');
+    assert.match(await p.textContent('.topbar .who'), /Ada Lovelace/);
+    // The Portal sign-in's "Opening your training…" cover is lifted as soon as the dashboard is drawn (not after its 10 s fallback).
+    await p.waitForFunction(() => ![].some.call(document.documentElement.children, (el) => el.style && el.style.zIndex === '2147483000'), null, { timeout: 2000 });
+    // The banner, as in the CM course: the completion ribbon and the title (no Roadmap button).
+    assert.match(await p.textContent('.dash-top h1'), /Medical Lien Balance Verification Professional Development Workshop/);
+    assert.match(await p.getAttribute('.completion-ribbon', 'aria-label'), /^0% /);
+    assert.equal(await p.locator('.dash-roadmap-btn').count(), 0, 'the banner has no Roadmap button');
+    assert.deepEqual(await p.$$eval('.day-card .mh-title', (els) => els.map((e) => e.textContent.trim().split(' · ')[0])), ['Day 1', 'Day 2', 'Day 3'], 'the dashboard is Day cards');
+    await noSideScroll(p, `${tag} dashboard`);
+
+    // ☰ Topics opens the day's outline.
+    await p.click('#day-1 .module-topics-btn');
+    assert.ok(await p.locator('#overlay .topic-list li').count() > 3, 'Topics lists the day\'s outline');
+    await p.click('#overlay .btn');
+
+    const days = await p.$$eval('.day-card', (els) => els.map((e) => Number(e.id.replace('day-', ''))));
+    assert.deepEqual(days, [1, 2, 3]);
+    for (const day of days) {
+      // Day card → the Objectives page → Start → the Training Agenda, then every module, then Day complete.
+      await p.click(`#day-${day} .module-start-btn`);
+      await p.waitForSelector('.obj-list li');
+      await noSideScroll(p, `${tag} day ${day} objectives`);
+      await p.click(`.stage-bar .btn-primary`);
+      await p.waitForSelector('.stage-agenda');
+      const total = Number((await p.textContent('.step-count')).match(/of (\d+)/)[1]);
+      await noSideScroll(p, `${tag} day ${day} agenda`);
+      for (let i = 2; i < total; i++) {
+        await p.click('.next-btn');
+        await p.waitForSelector('.stage-module');
+        assert.match(await p.textContent('.step-count'), new RegExp(`Step ${i} of ${total}`));
+        const what = `${tag} day ${day} step ${i}`;
+        if (await p.locator('.frame iframe').count()) assert.match(await p.getAttribute('.frame iframe', 'src'), new RegExp(`${DECK.source}|${VIDEO.source}`), what);
+        if (await p.locator('.slide-frame').count()) {
+          // a lesson deck kept on this site: the slide shows alone (no chip, caption or buttons), and its right half pages it
+          const first = /\/01\.webp$/.test(await p.getAttribute('.slide-frame img', 'src'));
+          assert.match(await p.getAttribute('.slide-frame img', 'src'), /^\/decks\/[a-z0-9-]+\/\d\d\.webp$/, what);
+          await p.waitForFunction(() => { const i = document.querySelector('.slide-frame img'); return i && i.complete && i.naturalWidth > 0; }, null, { timeout: 10000 }).catch(() => assert.fail(what + ': the slide image loads'));
+          assert.equal(await p.locator('.stage-body .frame-actions, .stage-body .frame-btns').count(), 0, what + ': nothing but the slide');
+          if (first) {   // one slide per step: the slide's right half is the next step, its left half the one before
+            await p.click('.slide-nav.next');
+            assert.match(await p.textContent('[id^="sl-cap-"]'), /Slide 2 of \d+/, what + ': › pages the deck');
+            assert.match(await p.textContent('.step-count'), new RegExp(`Step ${i + 1} of ${total}`), what + ': each slide is a step');
+            await p.click('.slide-nav.prev');
+          }
+        }
+        if (await p.locator('.ho-card').count()) {
+          // the handouts, as the Foundational Training has them: numbered cards; a PDF kept on this site must load
+          for (const href of await p.$$eval('.ho-card', (as) => as.map((a) => a.getAttribute('href')))) {
+            if (/^\/handouts\/|^\/decks\/docs\//.test(href)) {
+              const r = await p.request.get(new URL(href, BASE).href);
+              assert.equal(r.status(), 200, what + ': the handout loads'); assert.match(r.headers()['content-type'] || '', /pdf/, what + ': the handout is a PDF');
+            } else assert.match(href, /^https:\/\/drive\.google\.com\/file\/d\/[\w-]+\/(view|preview)$/, what);
+          }
+          await p.click('.ho-card >> nth=0'); await p.waitForSelector('#lecture-viewer-pane.open'); await p.click('#lecture-viewer-close');
+        }
+        if (await p.locator('.vl-lock').count()) assert.equal(await p.locator('.frame iframe').count(), 0, what + ': a recorded video stays locked until the trainer opens it');
+        if (await p.locator('.tool-card').count()) assert.ok((await p.locator('.tool-card').count()) >= 6, what + ': Know Your Tools');
+        if (await p.locator('.ns-embed').count()) assert.equal(await p.locator('.ns-embed .ld-sheet').count(), 1, what + ': the embedded Net Sheet');
+        if (await p.locator('.vcard').count()) {
+          // the Standard's video cards: a click plays it in the pop-out viewer
+          await p.locator('.vcard').first().click();
+          await p.waitForSelector('#lecture-viewer-pane.open');
+          assert.match(await p.getAttribute('#lecture-viewer-body iframe', 'src'), VIDEO, what + ' viewer');
+          await p.click('#lecture-viewer-close');
+        }
+        if (await p.locator('.qa-list textarea').count()) {
+          await p.fill('.qa-list li:nth-child(1) textarea', `Answer from ${tag}`);
+          assert.match(await p.textContent('.qa-count'), /^1\//);
+          // 🏅 the automated grader: key concepts covered, with what to think about
+          await p.fill('.qa-list li:nth-child(2) textarea', 'A statutory lien is created by law and must be repaid first; a contractual lien comes from the plan contract; a medical provider lien or letter of protection is the provider waiting to be paid from the settlement, so each has a different legal priority and reimbursement right.');
+          await p.click('button:has-text("Check my answers")');
+          await p.waitForSelector('.qa-grade');
+          assert.match(await p.textContent('.qa-list li:nth-child(2) .qa-fb'), /5\/5 key concepts/);
+          assert.match(await p.textContent('.qa-list li:nth-child(1) .qa-fb'), /think about/);
+        }
+        await noSideScroll(p, what);
+      }
+      await p.click('.next-btn');
+      await p.waitForSelector('.stage-done');
+      assert.doesNotMatch(await p.textContent('.stage-banner'), /&amp;|&lt;|&gt;|&#39;|&quot;/, `day ${day}: the wrap-up banner shows its title once escaped`);
+      // Days 3 and 5 have a Case Activity: clicking past it doesn't finish the case, so the day isn't complete yet
+      // (.github/scripts/desk.cjs plays the case itself). Days 1, 2 and 4 complete on their steps alone.
+      const hasLab = false;   // no Case Activity in this course: every day completes on its steps
+      assert.match(await p.textContent('.done-box h2'), hasLab ? /Almost there/ : new RegExp(`Day ${day} is complete`));
+      assert.equal(await p.locator('.wrap-box').count(), 0, 'no role-request instructions');
+      assert.equal(await p.locator('.trainer-notes').count(), 0, 'a trainee never sees trainer notes');
+      await p.click('.next-btn');   // Finish → the dashboard
+      await p.waitForSelector('.day-card');
+      assert.equal(await p.locator(`#day-${day}.mc-done`).count(), hasLab ? 0 : 1, `day ${day} ${hasLab ? 'waits for its case activity' : 'shows as completed'}`);
+    }
+    // The Slide Map jumps to a step.
+    await p.click('#day-1 .module-start-btn'); await p.waitForSelector('.obj-list li');
+    await p.click('.stage-bar .btn-primary'); await p.waitForSelector('.stage');
+    await p.click('text=Slide Map'); await p.click('#overlay .map-list li:nth-child(3) button');
+    await p.waitForSelector('.stage-module'); assert.match(await p.textContent('.step-count'), /Step \d+ of/, 'the Slide Map jumps to a step');
+    await p.click('.nav button:has-text("Dashboard")'); await p.waitForSelector('.day-card');
+    await p.waitForTimeout(600);   // the save is debounced
+    await p.reload();
+    await p.waitForSelector('.day-card');
+    assert.equal(await p.locator('.day-card.mc-done').count(), 3, `${tag}: every day saved as complete`);
+    assert.match(await p.getAttribute('.completion-ribbon', 'aria-label'), /^100% /, 'the ribbon shows every day done');
+    await p.context().close();
+  }
+
+  // A direct visit: the admin sign-in, then Admin with the trainees listed.
+  const a = await page({ width: 1366, height: 768 });
+  await a.goto(BASE);
+  await a.waitForSelector('#gate-apass');
+  await a.fill('#gate-apass', 'wrong');
+  await a.click('#gate-box .go');
+  await a.waitForSelector('#gate-aerr:not([style*="none"])');
+  await a.fill('#gate-apass', 'ci-admin');
+  await a.click('#gate-box .go');
+  await a.waitForSelector('.day-card');
+  await a.click('.nav button:has-text("Admin")');
+  // 🏅 the batch scorecard: every trainee once, and one panel per trainee
+  await a.waitForSelector('.ad-table td:has-text("Ada Lovelace1366")');
+  assert.equal(await a.locator('.ad-table tbody tr').count(), 2);
+  await noSideScroll(a, 'admin');
+  await a.locator('.ad-table tbody tr', { hasText: 'Ada Lovelace1366' }).locator('button:has-text("Open")').click();
+  await a.waitForSelector('#overlay .sc-card');
+  assert.equal(await a.locator('#overlay .ad-tabs button:has-text("Lien Desk")').count(), 0, 'no Lien Desk in this course');
+  await a.click('#overlay .overlay-foot .btn');
+  // 🎬 a recorded video opens for every batch once the trainer ticks it
+  await a.locator('#vl-admin label', { hasText: 'Liens, Lien Holders & Reductions' }).locator('input').check();
+  await a.waitForSelector('#toast.show:has-text("opened for all batches")');
+  await a.click('summary:has-text("Course links")');
+  await a.fill('#cl-d1-video', 'https://example.com/not-drive');
+  await a.click('text=Save course links');
+  await a.waitForSelector('#toast.show:has-text("drive.google.com")');
+  await a.click('.nav button:has-text("Dashboard")'); await a.waitForSelector('.day-card'); await a.click('#day-2 .module-start-btn'); await a.waitForSelector('.obj-list');
+  await a.click('.stage-bar .btn-primary'); await a.waitForSelector('.stage-agenda');
+  // 🖥 Presenter view: the trainer's notes and the speaker's notes, in a second window that follows the lesson.
+  const [pv] = await Promise.all([a.context().waitForEvent('page'), a.click('.pb-pres')]);
+  await pv.waitForSelector('#pv-side .notes');
+  assert.match(await pv.textContent('#pv-side'), /Trainer notes/, 'a trainer sees the trainer notes in Presenter view');
+  await a.click('.next-btn'); await pv.waitForTimeout(300);
+  assert.equal(await pv.locator('.slide img').count(), 1, 'Presenter view shows the slide that is up');
+  assert.ok((await pv.textContent('.notes')).length > 20, 'Presenter view shows the speaker\'s notes');
+  const before = await pv.textContent('#pv-count'); await pv.click('#pv-next'); await pv.waitForTimeout(300);
+  assert.notEqual(await pv.textContent('#pv-count'), before, 'Next in Presenter view moves the lesson');
+
+  await browser.close();
+  if (errors.length) { console.error('Page errors:\n' + errors.join('\n')); process.exit(1); }
+  console.log('OK: smoke test passed.');
+})().catch((e) => { console.error(e); process.exit(1); });

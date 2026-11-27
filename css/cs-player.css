@@ -1,0 +1,76 @@
+/* ============================================================
+   The lesson player: the stage across the full width (no side panel), with Objectives, Full screen and 🖥 Presenter
+   view in the bar under it; everything on the stage centred; the Training Agenda's topics fill the stage.
+   Loaded after css/ln-deck.css and css/cs-elite.css.
+   ============================================================ */
+.player,main.main-player > .player{grid-template-columns:minmax(0,1fr) !important;}
+.player-side{display:none !important;}
+
+/* the bar under the lesson */
+.player-bar{flex-wrap:wrap;justify-content:center;}
+.player-bar .step-count{margin:0 auto;}
+.player-bar .pb-obj,.player-bar .pb-full,.player-bar .pb-pres{white-space:nowrap;}
+@media (max-width:1100px){ .player-bar .pb-obj{display:none;} }
+
+/* everything on the stage centred: the kicker, the title, the chips, the captions and buttons under a deck or video */
+.stage-banner{align-self:center !important;text-align:center !important;}
+.stage-title{text-align:center;}
+.stage-chiprow{justify-content:center;}
+.agenda-mods{justify-content:center;}
+.frame-actions{flex-direction:column;justify-content:center;text-align:center;gap:8px;}
+.frame-actions .frame-btns{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;}
+.frame-note,.vc-note,.lab-note{text-align:center;}
+.agenda-theme p{text-align:center !important;-webkit-line-clamp:3 !important;}
+
+/* the Training Agenda: the topic tiles fill the stage, centred in each tile */
+.agenda-grid{grid-template-columns:repeat(var(--cols,4),minmax(0,1fr)) !important;}
+.agenda-item{flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:8px;padding:12px 14px !important;}
+.agenda-item > div{display:flex;flex-direction:column;align-items:center;gap:4px;}
+@media (min-width:1001px) and (min-height:600px){
+  .stage-agenda .stage-body{display:flex;flex-direction:column;}
+  .stage-agenda .agenda-grid{flex:1;min-height:0;grid-auto-rows:minmax(0,1fr);}
+}
+@media (max-width:900px){ .agenda-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;} }
+
+/* a lesson deck shows the slide alone: no chip, caption or buttons on it. Clicking its left or right half (or ← →, or
+   🖥 Presenter view) pages it; the two halves are invisible click areas, outlined only for keyboard focus */
+.stage-module:has(.slide-frame) .stage-chiprow{display:none;}
+.slide-frame .slide-nav,.slide-frame .slide-nav:hover:not(:disabled),.slide-frame .slide-nav:active:not(:disabled){top:0;bottom:0;height:auto;width:50%;transform:none;border-radius:0;
+  background:transparent;box-shadow:none;color:transparent;font-size:0;opacity:1;}
+.slide-frame .slide-nav.prev{left:0;cursor:w-resize;} .slide-frame .slide-nav.next{right:0;cursor:e-resize;}
+.slide-frame .slide-nav:disabled{cursor:default;opacity:0;}
+.slide-frame .slide-nav:focus-visible{box-shadow:inset 0 0 0 3px #F0C08A;background:transparent;}
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+/* a practice session or simulation, before it starts: one centred card that fills the stage, with big type */
+.stage-module:has(.px-intro) .stage-body{display:flex;flex-direction:column;}
+.px-box:has(> .px-intro){flex:1;min-height:0;justify-content:center;align-items:center;}
+.px-card.px-intro{width:min(100%,980px);margin:auto;text-align:center;padding:clamp(24px,4vh,48px) clamp(24px,4vw,56px);display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2vh,20px);
+  border-top:6px solid #DB8437;box-shadow:0 24px 50px -24px rgba(0,0,0,.55);}
+.px-card.px-intro h3{font-size:clamp(26px,2.6vw,38px);margin:0;}
+.px-card.px-intro p{font-size:clamp(17px,1.35vw,21px);line-height:1.55;font-weight:600;margin:0;max-width:60ch;}
+.px-card.px-intro .px-meta{font-size:clamp(14px,1.05vw,16px);font-weight:700;}
+.px-card.px-intro .btn-primary{font-size:clamp(16px,1.2vw,19px);padding:14px 34px;border-radius:999px;}
+
+/* 🔒 a recorded video before the trainer opens it (js/cs-videos.js) */
+.vl-lock{margin:auto;max-width:760px;text-align:center;background:#fff;color:#1E2340;border-radius:18px;padding:40px 44px;border-top:6px solid #DB8437;box-shadow:0 24px 50px -24px rgba(0,0,0,.55);}
+.vl-lock .vl-ic{font-size:54px;line-height:1;} .vl-lock h3{margin:12px 0 8px;font-size:26px;color:#1E2340;}
+.vl-lock p{margin:0 0 6px;font-size:18px;font-weight:600;color:#2A3048;} .vl-lock .vl-sub{font-size:15px;color:#5A6078;font-weight:500;}
+.stage-module:has(.vl-lock) .stage-body{display:flex;align-items:center;justify-content:center;}
+
+/* 📄 the handouts, as the Foundational Training presents them */
+.ho-wrap{display:flex;flex-direction:column;gap:14px;width:100%;max-width:1240px;margin:auto;}
+.ho-head{text-align:center;} .ho-sub{margin:0;font:700 16px/1.4 'Inter',sans-serif;color:#E3E6F2;letter-spacing:.04em;}
+.ho-note{margin:4px 0 0;font:600 15px/1.4 'Inter',sans-serif;color:#C9CCDD;}
+.ho-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px;align-items:stretch;}
+.ho-howto{display:flex;flex-direction:column;justify-content:center;background:#141832;border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:20px 24px;color:#fff;}
+.ho-howto-h{margin:0 0 8px;font:800 15px/1.2 'Inter',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#F4B77A;}
+.ho-steps{margin:0;padding-left:26px;font:600 20px/1.55 'Inter',sans-serif;color:#fff;} .ho-steps li::marker{color:#F4B77A;font-weight:800;}
+.ho-list{display:grid;grid-auto-rows:minmax(56px,auto);gap:10px;}
+.ho-card{display:flex;align-items:center;gap:14px;padding:12px 16px;border:2px solid #1E2340;border-left:8px solid #DB8437;border-radius:12px;background:#fff;color:#1E2340;text-decoration:none;text-align:left;}
+.ho-card:hover{background:#FFF4EC;}
+.ho-card span{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#1E2340;color:#fff;font:800 18px 'Poppins','Inter',sans-serif;}
+.ho-card b{flex:1;font:800 18px/1.25 'Poppins','Inter',sans-serif;color:#1E2340;}
+.ho-card i{flex:none;font-style:normal;font:800 15px 'Inter',sans-serif;color:#fff;background:#1E2340;padding:7px 16px;border-radius:999px;}
+.stage-module:has(.ho-wrap) .stage-body{display:flex;overflow-y:auto;}
+@media (max-width:900px){ .ho-body{grid-template-columns:minmax(0,1fr);} }

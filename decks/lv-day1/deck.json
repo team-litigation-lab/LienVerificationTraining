@@ -1,0 +1,350 @@
+{
+ "title": "Medical Lien Balance Verification Training · Day 1",
+ "sections": [
+  [
+   1,
+   2,
+   "Introduction"
+  ],
+  [
+   3,
+   8,
+   "Overview"
+  ],
+  [
+   9,
+   15,
+   "Types of Liens"
+  ],
+  [
+   16,
+   21,
+   "Purpose"
+  ],
+  [
+   22,
+   25,
+   "Workflow"
+  ],
+  [
+   26,
+   32,
+   "Framework: Medical Liens"
+  ],
+  [
+   33,
+   36,
+   "How it Works"
+  ],
+  [
+   37,
+   41,
+   "Significance"
+  ],
+  [
+   42,
+   59,
+   "Mainstream"
+  ]
+ ],
+ "sources": [
+  {
+   "src": "lv-day1",
+   "n": 1
+  },
+  {
+   "src": "lv-day1",
+   "n": 2
+  },
+  {
+   "src": "lv-day1",
+   "n": 3
+  },
+  {
+   "src": "lv-day1",
+   "n": 4
+  },
+  {
+   "src": "lv-day1",
+   "n": 5
+  },
+  {
+   "src": "lv-day1",
+   "n": 6
+  },
+  {
+   "src": "lv-day1",
+   "n": 7
+  },
+  {
+   "src": "lv-day1",
+   "n": 8
+  },
+  {
+   "src": "lv-day1",
+   "n": 9
+  },
+  {
+   "src": "lv-day1",
+   "n": 10
+  },
+  {
+   "src": "lv-day1",
+   "n": 11
+  },
+  {
+   "src": "lv-day1",
+   "n": 12
+  },
+  {
+   "src": "lv-day1",
+   "n": 13
+  },
+  {
+   "src": "lv-day1",
+   "n": 14
+  },
+  {
+   "src": "lv-day1",
+   "n": 15
+  },
+  {
+   "src": "lv-day1",
+   "n": 16
+  },
+  {
+   "src": "lv-day1",
+   "n": 17
+  },
+  {
+   "src": "lv-day1",
+   "n": 18
+  },
+  {
+   "src": "lv-day1",
+   "n": 19
+  },
+  {
+   "src": "lv-day1",
+   "n": 20
+  },
+  {
+   "src": "lv-day1",
+   "n": 21
+  },
+  {
+   "src": "lv-day1",
+   "n": 22
+  },
+  {
+   "src": "lv-day1",
+   "n": 23
+  },
+  {
+   "src": "lv-day1",
+   "n": 24
+  },
+  {
+   "src": "lv-day1",
+   "n": 25
+  },
+  {
+   "src": "lv-day1",
+   "n": 26
+  },
+  {
+   "src": "lv-day1",
+   "n": 27
+  },
+  {
+   "src": "lv-day1",
+   "n": 28
+  },
+  {
+   "src": "lv-day1",
+   "n": 29
+  },
+  {
+   "src": "lv-day1",
+   "n": 30
+  },
+  {
+   "src": "lv-day1",
+   "n": 31
+  },
+  {
+   "src": "lv-day1",
+   "n": 32
+  },
+  {
+   "src": "lv-day1",
+   "n": 33
+  },
+  {
+   "src": "lv-day1",
+   "n": 34
+  },
+  {
+   "src": "lv-day1",
+   "n": 35
+  },
+  {
+   "src": "lv-day1",
+   "n": 36
+  },
+  {
+   "src": "lv-day1",
+   "n": 37
+  },
+  {
+   "src": "lv-day1",
+   "n": 38
+  },
+  {
+   "src": "lv-day1",
+   "n": 39
+  },
+  {
+   "src": "lv-day1",
+   "n": 40
+  },
+  {
+   "src": "lv-day1",
+   "n": 41
+  },
+  {
+   "src": "lv-day1",
+   "n": 42
+  },
+  {
+   "src": "lv-day1",
+   "n": 43
+  },
+  {
+   "src": "lv-day1",
+   "n": 44
+  },
+  {
+   "src": "lv-day1",
+   "n": 45
+  },
+  {
+   "src": "lv-day1",
+   "n": 46
+  },
+  {
+   "src": "lv-day1",
+   "n": 47
+  },
+  {
+   "src": "lv-day1",
+   "n": 48
+  },
+  {
+   "src": "lv-day1",
+   "n": 49
+  },
+  {
+   "src": "lv-day1",
+   "n": 50
+  },
+  {
+   "src": "lv-day1",
+   "n": 51
+  },
+  {
+   "src": "lv-day1",
+   "n": 52
+  },
+  {
+   "src": "lv-day1",
+   "n": 53
+  },
+  {
+   "src": "lv-day1",
+   "n": 54
+  },
+  {
+   "src": "lv-day1",
+   "n": 55
+  },
+  {
+   "src": "lv-day1",
+   "n": 56
+  },
+  {
+   "src": "lv-day1",
+   "n": 57
+  },
+  {
+   "src": "lv-day1",
+   "n": 58
+  },
+  {
+   "src": "lv-day1",
+   "n": 59
+  }
+ ],
+ "titles": [
+  "Medical Lien Balance Verification Training · Day 1",
+  "Course Outline:",
+  "Overview",
+  "Lien Balance Verification",
+  "What Is a Lien?",
+  "How the Lien Works",
+  "What's in It for the Client?",
+  "What's in It for Us (Law Firm)?",
+  "Types of Liens",
+  "Types of Liens",
+  "Medical Liens",
+  "Attorney Liens",
+  "Pre-Settlement Liens",
+  "Worker's Compensation Liens",
+  "Miscellaneous Liens",
+  "Purpose",
+  "Accurate Financial Recovery",
+  "Preventing Overpayment",
+  "Legal Compliance",
+  "Maximizes Client Recovery",
+  "Prevents Settlement Delays",
+  "Workflow",
+  "Workflow",
+  "The Process: Lien Verification Steps",
+  "Non - Negotiables",
+  "Medical Liens",
+  "Medical Treatment",
+  "Lien Established",
+  "Case Settlement",
+  "Lien Payment",
+  "Client Disbursement",
+  "Framework",
+  "How it Works",
+  "Sample Scenario",
+  "Settlement Calculation",
+  "Settlement to Total Net Disbursement",
+  "Significance",
+  "Access to Immediate Medical Treatment",
+  "Mitigation of Financial Burden",
+  "Improved Health Outcomes",
+  "Significance",
+  "Mainstream",
+  "The Process",
+  "Settlement, Lien Verification, Lien Negotiation",
+  "Step 1: Collecting Coverage Data",
+  "Step 1: Collecting Coverage Data (continued)",
+  "Identifying Potential Liens",
+  "Step 2: Obtain Lien Details",
+  "Step 2: Obtain Lien Details (continued)",
+  "Release of Information (ROI) Form",
+  "Preparing the ROI",
+  "Sending the Request and ROI",
+  "Third-Party Handlers",
+  "Submitting the Balance Verification Request",
+  "Creating the Balance Verification Form",
+  "Step 3: Follow Up",
+  "Regular Communication with Lienholders",
+  "Get Confirmation and Save It",
+  "Thank you!"
+ ],
+ "handouts": {}
+}

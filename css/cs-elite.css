@@ -1,0 +1,174 @@
+/* ============================================================================
+   ✦ The elite look on every module of the Closing Specialist Track.
+   css/ln-deck.css (shared with the Lien Negotiator Track) dresses the player: the stage, its frame, the bar and the
+   side panel. This carries the same language (LSH navy with warm gold, the gold keel and hairline, mono tags,
+   pill geometry, soft elevation, dark-navy primary buttons) onto everything that sits on the stage or around it:
+   the dashboard's Day cards, the lesson decks kept on this site, the practice sessions and simulations, the guides,
+   the tools, the handouts, the process questions and the case activity. Design only: no text, order or behaviour
+   changes. Loaded after css/ln-deck.css, whose --dk-* tokens it uses.
+   ========================================================================= */
+:root{
+  --el-card:linear-gradient(180deg,#ffffff 0%,#FBF9F5 100%);
+  --el-keel:inset 0 3px 0 var(--dk-gold);
+  --el-lift:0 1px 2px rgba(30,35,64,.06),0 14px 30px -20px rgba(30,35,64,.55);
+  --el-line:rgba(30,35,64,.12);
+  --el-ease:cubic-bezier(.2,.7,.2,1);
+  --el-ring:0 0 0 3px rgba(219,132,55,.45);
+}
+
+/* ---------- one primary button: the Portal's dark-navy Launch button with its gold keel ---------- */
+.stage .btn-primary,.px-box .btn-primary,.lab-box .btn-primary,.stage-bar .btn-primary,.dash-resume-btn{
+  border-radius:12px;background:linear-gradient(180deg,#2a3058 0%,var(--dk-navy) 100%);color:#fff;border:0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -3px 0 var(--dk-gold),0 10px 18px -10px rgba(30,35,64,.85);
+  transition:transform .12s var(--el-ease),background .18s var(--el-ease);}
+.stage .btn-primary:not([disabled]):hover,.px-box .btn-primary:hover,.lab-box .btn-primary:hover,.stage-bar .btn-primary:hover,.dash-resume-btn:hover{
+  background:linear-gradient(180deg,#343b6b 0%,#262c52 100%);color:#fff;}
+.stage .btn:active,.px-opt:active,.module-start-btn:active{transform:translateY(1px);}
+.stage .btn:focus-visible,.px-opt:focus-visible,.module-card button:focus-visible,.slide-nav:focus-visible{outline:none;box-shadow:var(--el-ring);}
+
+/* ---------- the dashboard: each Day card on the same frame as the player ---------- */
+.module-card{background:var(--el-card);border:1px solid var(--el-line);border-radius:18px;box-shadow:var(--el-lift);
+  transition:transform .18s var(--el-ease),box-shadow .18s var(--el-ease);}
+.module-card:hover{transform:translateY(-3px);box-shadow:0 2px 6px rgba(30,35,64,.08),0 26px 44px -24px rgba(30,35,64,.6);}
+.module-card::before{left:18px;right:18px;height:4px;background:linear-gradient(90deg,var(--dk-navy) 0%,var(--dk-gold) 100%);}
+.module-card:nth-child(2n)::before{background:linear-gradient(90deg,var(--dk-gold) 0%,var(--dk-navy) 100%);}
+.module-head{border-bottom-color:var(--el-line);}
+.mh-title{font-family:var(--font-ui);font-weight:800;letter-spacing:-.01em;color:var(--dk-navy);}
+.mh-day{font-family:var(--dk-mono);letter-spacing:.12em;}
+.module-icon{filter:drop-shadow(0 6px 10px rgba(30,35,64,.22));}
+.module-theme{border-radius:14px;background:linear-gradient(180deg,#FFF7EE 0%,#FBE6CF 100%);border:1px solid rgba(219,132,55,.5);
+  box-shadow:inset 0 1px 0 #fff,0 8px 16px -12px rgba(219,132,55,.7);color:#4A2A0C;}
+.module-start-btn{margin:8px 10px 4px;border:0;border-radius:12px;color:#fff;font-weight:800;letter-spacing:.01em;
+  background:linear-gradient(180deg,#2a3058 0%,var(--dk-navy) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -3px 0 var(--dk-gold),0 10px 18px -10px rgba(30,35,64,.85);}
+.module-start-btn:hover{background:linear-gradient(180deg,#343b6b 0%,#262c52 100%);color:#fff;}
+.module-topics-btn{border-radius:999px;padding:5px 12px;border:1px solid transparent;}
+.module-topics-btn:hover{border-color:var(--el-line);background:#F4F5FA;}
+.mc-count{font-family:var(--dk-mono);letter-spacing:.06em;}
+
+/* ---------- light cards on the dark stage: one surface, the gold keel, one radius ---------- */
+.px-card,.guide,.qa-list,.lab-box,.tool-card,.done-box,.agenda-theme{border-radius:14px;}
+.guide,.qa-list,.lab-box{background:var(--el-card);box-shadow:var(--el-keel),0 14px 28px -20px rgba(0,0,0,.6);}
+
+/* ---------- the lesson decks kept on this site (kind "slides") ---------- */
+.slide-frame{background:#fff;}
+.slide-nav{width:46px;height:68px;border-radius:14px;background:linear-gradient(180deg,rgba(42,48,88,.78) 0%,rgba(30,35,64,.86) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -3px 0 var(--dk-gold),0 12px 22px -12px rgba(0,0,0,.7);
+  transition:background .18s var(--el-ease),transform .12s var(--el-ease);}
+.slide-nav:hover:not(:disabled){background:linear-gradient(180deg,#343b6b 0%,#262c52 100%);}
+.slide-nav:active:not(:disabled){transform:translateY(-50%) scale(.96);}
+[id^="sl-cap-"]{font-family:var(--dk-mono);font-size:12.5px;letter-spacing:.06em;color:var(--dk-gold-soft);}
+
+/* ---------- the practice sessions and simulations (kind "practice") ---------- */
+.px-head .mono{font-family:var(--dk-mono);font-size:12.5px;letter-spacing:.1em;color:var(--dk-gold-soft);}
+.px-card{background:var(--el-card);box-shadow:var(--el-keel),0 14px 28px -20px rgba(0,0,0,.6);}
+.px-intro h3,.px-done h3{font-family:var(--font-ui);font-weight:900;letter-spacing:-.01em;color:var(--dk-navy);}
+.px-brief{box-shadow:inset 3px 0 0 var(--dk-navy),0 14px 28px -20px rgba(0,0,0,.6);}
+.px-brief b{font-family:var(--dk-mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--dk-navy);}
+.px-line{border-left:0;border-radius:12px;background:linear-gradient(180deg,#F6F3EE 0%,#EFEAE2 100%);box-shadow:inset 3px 0 0 var(--dk-gold);}
+.px-who{font-family:var(--dk-mono);letter-spacing:.12em;color:#7A4A1D;}
+.px-opt{border-radius:12px;border:1px solid rgba(30,35,64,.16);background:#fff;box-shadow:0 4px 10px -8px rgba(30,35,64,.5);
+  transition:border-color .15s var(--el-ease),background .15s var(--el-ease),transform .12s var(--el-ease);}
+.px-opt:hover:not(:disabled){border-color:var(--dk-gold);background:#FFFBF5;transform:translateY(-1px);}
+.px-opt.ok{border-color:#11734b;background:#E3F3EA;box-shadow:inset 3px 0 0 #11734b;}
+.px-opt.bad{border-color:#b10202;background:#FBE4E1;box-shadow:inset 3px 0 0 #b10202;}
+.px-fb{border-radius:12px;}
+.px-fields .field input,.px-num input{border-radius:10px;border:1px solid rgba(30,35,64,.2);background:#fff;}
+.px-fields .field input:focus,.px-num input:focus{outline:none;border-color:var(--dk-gold);box-shadow:var(--el-ring);}
+.px-meta{color:#3E4558;}
+
+/* ---------- guides, tools, handouts, questions, the case activity ---------- */
+.guide-sec{border-bottom-color:var(--el-line);}
+.guide-sec h3{font-weight:900;letter-spacing:-.01em;color:var(--dk-navy);}
+.guide-sec h3::before{content:"";display:inline-block;width:14px;height:2px;margin-right:8px;vertical-align:.32em;border-radius:2px;background:var(--dk-gold);}
+.guide-rows th{font-family:var(--dk-mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:#4A5160;}
+.guide-rows td{background:rgba(30,35,64,.035);border-radius:8px;font-family:var(--font-ui);font-size:13.5px;line-height:1.45;color:#1F2433;}
+.guide-pre{border-color:var(--el-line);border-radius:12px;box-shadow:inset 0 2px 0 var(--dk-gold);}
+.guide-links .btn,.lab-foot .btn-ghost{border-radius:999px;}
+.tool-card{background:var(--el-card);border:1px solid var(--el-line);box-shadow:var(--el-keel),0 10px 22px -18px rgba(30,35,64,.55);}
+.doc-tabs button{border-radius:999px;transition:background .15s var(--el-ease),border-color .15s var(--el-ease);}
+.doc-frame{border-radius:14px;box-shadow:0 0 0 1px rgba(245,201,154,.35),0 26px 50px -24px rgba(0,0,0,.85);}
+.qa-list textarea{border-radius:10px;}
+.qa-list textarea:focus{outline:none;border-color:var(--dk-gold);box-shadow:var(--el-ring);}
+.lab-case{border-radius:12px;}
+.vcard{border-radius:14px;box-shadow:var(--el-keel),0 10px 22px -18px rgba(30,35,64,.55);}
+
+@media (prefers-reduced-motion: reduce){
+  .module-card,.px-opt,.slide-nav,.doc-tabs button,.stage .btn-primary{transition:none;}
+  .module-card:hover,.px-opt:hover:not(:disabled){transform:none;}
+}
+
+/* ---------- 🏅 the Scorecard (js/cs-scorecard.js) ---------- */
+.sc-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px;}
+.sc-tile{background:var(--el-card);border:1px solid var(--el-line);border-radius:14px;padding:12px 16px;box-shadow:var(--el-keel),var(--el-lift);display:flex;flex-direction:column;gap:6px;}
+.sc-tile > span:first-child{font-family:var(--dk-mono);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4A5160;}
+.sc-tile b{font-size:28px;font-weight:900;color:var(--dk-navy);line-height:1;}
+.sc-tile small{font-size:15px;font-weight:700;color:#4A5160;margin-left:2px;}
+.sc-pill{display:inline-block;align-self:flex-start;padding:4px 12px;border-radius:999px;font-size:12.5px;font-weight:800;white-space:nowrap;border:1px solid transparent;}
+.sc-ok{background:#E3F3EA;color:#0E5A3A;border-color:rgba(17,115,75,.35);}
+.sc-bad{background:#FBE4E1;color:#8A1C12;border-color:rgba(177,2,2,.3);}
+.sc-mid{background:#FFF4E3;color:#7A4A1D;border-color:rgba(219,132,55,.45);}
+.sc-none{background:#EEF0F6;color:#3E4558;border-color:rgba(30,35,64,.15);}
+.sc-num{font-size:15px;font-weight:900;}
+.sc-ok-t{color:#0E5A3A;} .sc-bad-t{color:#8A1C12;}
+.sc-dash{color:#5B6274;font-weight:600;font-size:12.5px;}
+.sc-na{color:#9AA0AE;}
+.sc-sub{display:block;font-size:12px;font-weight:600;color:#4A5160;margin-top:2px;}
+.sc-remark{font-weight:500;font-size:13px;line-height:1.4;}
+/* the standard "why this score" table: a row per graded piece, grouped by day */
+.sc-sw{overflow-x:auto;border:1px solid #E1E5EE;border-radius:10px;background:#fff;margin-bottom:8px;}
+.sc-st-t{width:100%;min-width:980px;border-collapse:collapse;font-size:13px;line-height:1.42;color:#262B45;}
+.sc-st-t thead th{background:#262B45 !important;color:#fff !important;font:800 12.5px 'Inter',system-ui,sans-serif;text-align:left;padding:8px 10px;border-bottom:2px solid #DB8437;white-space:nowrap;text-transform:none;letter-spacing:0;}
+.sc-st-t td,.sc-st-t tbody th{padding:8px 10px;border-top:1px solid #E6E9F1;vertical-align:top;text-align:left;}
+.sc-st-t tr.sc-act th{width:170px;font-weight:600;background:#fff !important;border-bottom:0 !important;box-shadow:none !important;color:#1B1E2E !important;text-transform:none !important;letter-spacing:0 !important;font-size:13px !important;}
+.sc-st-t tr.sc-act th b{color:#0f2148;}
+.sc-st-t tr.sc-act th small{display:block;font-size:12px;color:#4A5070 !important;font-weight:600;margin-top:2px;}
+.sc-st-t tr.sc-day th{background:#EEF0F6 !important;color:#1B1E2E !important;border-top:2px solid #C9CEDC;text-transform:none !important;letter-spacing:0 !important;font-size:13px !important;font-weight:600;}
+.sc-st-t tr.sc-day th > *{margin-right:12px;vertical-align:middle;}
+.sc-day-h b{color:#0f2148;font-size:14px;} .sc-day-t{color:#3B4160;}
+.sc-day-s{color:#3B4160;font-weight:700;}
+.sc-st-t td.sc-sc{width:64px;text-align:center;}
+.sc-spill{display:inline-block;min-width:40px;padding:3px 10px;border-radius:999px;font-weight:800;border:1px solid transparent;}
+.sc-st-t ul{margin:0;padding-left:16px;} .sc-st-t li+li{margin-top:3px;}
+.sc-st-t i{color:#5A6078;}
+.sc-st-t td.sc-w{background:#F7F8FC;} .sc-st-t td.sc-g{background:#F1F9F3;} .sc-st-t td.sc-b{background:#FDF3F0;} .sc-st-t td.sc-n{background:#F2F4FB;}
+.sc-note{font-size:13px;color:#4A5160;margin:10px 2px 0;}
+.sc-card .table-wrap{overflow-x:auto;}
+
+/* ---------- the dashboard: wide enough for every Day card in one row ---------- */
+main.main-dash{max-width:1640px;}
+@media (min-width:1280px){ main.main-dash .module-grid{grid-template-columns:repeat(var(--days,5),minmax(0,1fr));} }
+main.main-dash .module-card{min-width:0;}
+/* the Day card's theme: a pill, as the pills across the platform (EA / PA, CM, the Academy Index) */
+.module-theme{display:inline-flex;align-items:center;justify-content:center;align-self:center;max-width:100%;border-radius:999px;padding:8px 18px;
+  font-family:var(--font-ui);font-size:13.5px;font-weight:800;letter-spacing:.005em;line-height:1.3;text-wrap:balance;}
+/* 🏅 the Scorecard pill in the dashboard band (as EA / PA's My Scorecard) */
+.dash-sc-pill{display:inline-flex;align-items:baseline;gap:8px;max-width:100%;border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px;font-weight:800;cursor:pointer;
+  background:#fff;color:var(--dk-navy);border:1px solid rgba(245,201,154,.7);box-shadow:inset 0 -2px 0 var(--dk-gold),0 8px 18px -10px rgba(0,0,0,.6);
+  transition:transform .12s var(--el-ease),background .18s var(--el-ease);}
+.dash-sc-pill span{font-size:12px;font-weight:600;color:#4A5160;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.dash-sc-pill span::before{content:"· ";}
+.dash-sc-pill:hover{background:#FFF7EE;transform:translateY(-1px);}
+.dash-sc-pill:focus-visible{outline:none;box-shadow:var(--el-ring);}
+@media (max-width:760px){ .dash-sc-pill{white-space:normal;flex-wrap:wrap;justify-content:center;} .dash-sc-pill span{white-space:normal;} }
+
+/* ---------- the Day card's theme: the LSH Academy Index's track pill ----------
+   As programs.html draws a track's title: a glossy frame (a pale wash of the track's colour, near-white at the
+   top-left) inside a gradient border of that colour (deep, light, deep), with a white highlight along its top; the
+   words in the colour, deeper, with a light shine passing over them, and a soft glow. The Closing Specialist's colour
+   is its gold. Motion stops for anyone whose system asks for reduced motion. */
+.module-theme.tk-pill{--tk:#C8702A;--tk-ink:color-mix(in srgb,var(--tk) 72%,#0f172a);
+  border:2px solid transparent;border-radius:12px;padding:9px 16px;color:var(--tk-ink);
+  background:linear-gradient(135deg,rgba(255,255,255,.95) 0%,color-mix(in srgb,var(--tk) 7%,#fff) 38%,color-mix(in srgb,var(--tk) 14%,#fff) 100%) padding-box,
+             linear-gradient(120deg,var(--tk) 0%,color-mix(in srgb,var(--tk) 35%,#fff) 50%,var(--tk) 100%) border-box;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 14px -10px color-mix(in srgb,var(--tk) 55%,transparent);
+  animation:csTkGlow 3.2s ease-in-out infinite;animation-delay:var(--tkd,0s);}
+.module-theme.tk-pill .tk-name{font-family:var(--font-ui);font-weight:900;letter-spacing:.005em;
+  background:linear-gradient(100deg,var(--tk-ink) 0%,var(--tk-ink) 38%,color-mix(in srgb,var(--tk) 45%,#fff) 50%,var(--tk-ink) 62%,var(--tk-ink) 100%);
+  background-size:260% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:var(--tk-ink);-webkit-text-fill-color:transparent;
+  animation:csTkShine 4.5s ease-in-out infinite;animation-delay:var(--tkd,0s);}
+@keyframes csTkShine{0%,45%{background-position:100% 0;}85%,100%{background-position:0 0;}}
+@keyframes csTkGlow{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 14px -10px color-mix(in srgb,var(--tk) 55%,transparent);}
+  50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 3px color-mix(in srgb,var(--tk) 18%,transparent),0 0 16px color-mix(in srgb,var(--tk) 32%,transparent);}}
+.day-card.mc-done .module-theme.tk-pill{--tk:#11734b;}
+@media (prefers-reduced-motion: reduce){ .module-theme.tk-pill,.module-theme.tk-pill .tk-name{animation:none;} .module-theme.tk-pill .tk-name{background-position:0 0;} }

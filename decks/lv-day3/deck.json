@@ -1,0 +1,275 @@
+{
+ "title": "Medical Lien Balance Verification Training · Day 3",
+ "sections": [
+  [
+   1,
+   2,
+   "Introduction"
+  ],
+  [
+   3,
+   11,
+   "Entities Involved"
+  ],
+  [
+   12,
+   24,
+   "Duplicate Liens"
+  ],
+  [
+   25,
+   36,
+   "Chartswap"
+  ],
+  [
+   37,
+   48,
+   "Summary"
+  ]
+ ],
+ "sources": [
+  {
+   "src": "lv-day3",
+   "n": 1
+  },
+  {
+   "src": "lv-day3",
+   "n": 2
+  },
+  {
+   "src": "lv-day3",
+   "n": 3
+  },
+  {
+   "src": "lv-day3",
+   "n": 4
+  },
+  {
+   "src": "lv-day3",
+   "n": 5
+  },
+  {
+   "src": "lv-day3",
+   "n": 6
+  },
+  {
+   "src": "lv-day3",
+   "n": 7
+  },
+  {
+   "src": "lv-day3",
+   "n": 8
+  },
+  {
+   "src": "lv-day3",
+   "n": 9
+  },
+  {
+   "src": "lv-day3",
+   "n": 10
+  },
+  {
+   "src": "lv-day3",
+   "n": 11
+  },
+  {
+   "src": "lv-day3",
+   "n": 12
+  },
+  {
+   "src": "lv-day3",
+   "n": 13
+  },
+  {
+   "src": "lv-day3",
+   "n": 14
+  },
+  {
+   "src": "lv-day3",
+   "n": 15
+  },
+  {
+   "src": "lv-day3",
+   "n": 16
+  },
+  {
+   "src": "lv-day3",
+   "n": 17
+  },
+  {
+   "src": "lv-day3",
+   "n": 18
+  },
+  {
+   "src": "lv-day3",
+   "n": 19
+  },
+  {
+   "src": "lv-day3",
+   "n": 20
+  },
+  {
+   "src": "lv-day3",
+   "n": 21
+  },
+  {
+   "src": "lv-day3",
+   "n": 22
+  },
+  {
+   "src": "lv-day3",
+   "n": 23
+  },
+  {
+   "src": "lv-day3",
+   "n": 24
+  },
+  {
+   "src": "lv-day3",
+   "n": 25
+  },
+  {
+   "src": "lv-day3",
+   "n": 26
+  },
+  {
+   "src": "lv-day3",
+   "n": 27
+  },
+  {
+   "src": "lv-day3",
+   "n": 28
+  },
+  {
+   "src": "lv-day3",
+   "n": 29
+  },
+  {
+   "src": "lv-day3",
+   "n": 30
+  },
+  {
+   "src": "lv-day3",
+   "n": 31
+  },
+  {
+   "src": "lv-day3",
+   "n": 32
+  },
+  {
+   "src": "lv-day3",
+   "n": 33
+  },
+  {
+   "src": "lv-day3",
+   "n": 34
+  },
+  {
+   "src": "lv-day3",
+   "n": 35
+  },
+  {
+   "src": "lv-day3",
+   "n": 36
+  },
+  {
+   "src": "lv-day3",
+   "n": 37
+  },
+  {
+   "src": "lv-day3",
+   "n": 38
+  },
+  {
+   "src": "lv-day3",
+   "n": 39
+  },
+  {
+   "src": "lv-day3",
+   "n": 40
+  },
+  {
+   "src": "lv-day3",
+   "n": 41
+  },
+  {
+   "src": "lv-day3",
+   "n": 42
+  },
+  {
+   "src": "lv-day3",
+   "n": 43
+  },
+  {
+   "src": "lv-day3",
+   "n": 44
+  },
+  {
+   "src": "lv-day3",
+   "n": 45
+  },
+  {
+   "src": "lv-day3",
+   "n": 46
+  },
+  {
+   "src": "lv-day3",
+   "n": 47
+  },
+  {
+   "src": "lv-day3",
+   "n": 48
+  }
+ ],
+ "titles": [
+  "Medical Lien Balance Verification Training · Day 3",
+  "Course Outline",
+  "Entities Involved",
+  "Participating Entities",
+  "Medical Providers",
+  "Hospitals",
+  "Health Insurance Providers",
+  "Auto Insurance Companies",
+  "Workers' Compensation Insurers",
+  "Government Programs",
+  "Third Party Lien Funders",
+  "Duplicate Liens",
+  "Client Account",
+  "The Lien Handler",
+  "When a Lien Is Held by a Funder",
+  "The Lienholder's Contact Card",
+  "Why Providers Sell Their Invoices",
+  "Check for Duplicate Liens",
+  "Request Lien Documentation",
+  "Verify with the Original Provider",
+  "Compare the Original Billing Statement",
+  "Review Prior Payments",
+  "Seek Legal Advice",
+  "Address Duplicates Early",
+  "Chartswap",
+  "What Is ChartSwap?",
+  "ChartSwap for Lien Documents",
+  "Faster Access to Documents",
+  "Where ChartSwap Is Used",
+  "Sign Up or Log In",
+  "Start a New Request",
+  "Identify Provider and Attach Authorizations",
+  "Save the Lien Documents",
+  "Upload to Processing Documents",
+  "Complete the Upload",
+  "Record the Balance Verification",
+  "Summary",
+  "Looking Back",
+  "Purpose and Relevance",
+  "Impact on Settlements",
+  "Proper Monitoring",
+  "Accuracy and Consistency",
+  "Proper Documentation",
+  "Accurate Calculations",
+  "Key Take Aways",
+  "Key Take Aways",
+  "Key Take Aways",
+  "Thank You!"
+ ],
+ "handouts": {}
+}

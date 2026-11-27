@@ -1,0 +1,222 @@
+/* ============================================================
+   The dashboard in the LSH standard elite design, as the Case Management course draws it:
+   🧰 Know Your Tools (a navy banner with a gold edge and a white-outlined Review), the Day cards in the LSH Academy
+   Index frame (navy along the top fading to gold, on a white card) with a grey head, the icon and the theme with a short
+   orange rule, the day's status, Start / Review filling a grey row over ☰ Topics | 🏅 Scorecard and the day's ▶ Video in
+   a cream row at the foot; then the stats band (progress, scores, My Score Card) in navy under the cards, and the navy
+   footer. Loaded after css/cs-elite.css.
+   ============================================================ */
+:root{--cm-navy:#1E2340;--cm-navy2:#343C66;--cm-gold:#DB8437;--cm-ink:#141A2E;--cm-ink2:#2A3048;--cm-line:#9CA3B8;}
+
+/* 🧰 Know Your Tools */
+main.main-dash .kt-card{display:flex;align-items:center;gap:20px;margin:0 0 16px;padding:22px 28px;min-height:104px;border-radius:16px;
+  background:linear-gradient(135deg,var(--cm-navy) 0%,var(--cm-navy2) 100%);border:1px solid #2C335A;border-left:7px solid var(--cm-gold);
+  box-shadow:0 10px 24px -16px rgba(38,43,69,.6);}
+.kt-card-ic{font-size:42px;line-height:1;color:#fff;}
+.kt-card > div{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.kt-card b{font:800 24px 'Poppins','Inter',sans-serif;color:#fff;}
+.kt-card small{font:600 16.5px/1.45 'Inter',sans-serif;color:#D9DCEA;}
+.kt-card .btn.btn-ghost{padding:12px 30px;font-size:17px;font-weight:800;border-radius:12px;color:#fff;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.75);}
+.kt-card .btn.btn-ghost:hover{background:#fff;color:var(--cm-navy);}
+@media (max-width:700px){ .kt-card{flex-wrap:wrap;padding:18px;} .kt-card .btn{width:100%;} }
+
+/* the Day cards */
+main.main-dash .module-card.dc-cm{display:flex;flex-direction:column;overflow:hidden;padding:0;transform:none;
+  border:6px solid transparent;border-radius:22px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(180deg,#1E2340 0%,#2c3360 30%,#a8692f 78%,#DB8437 100%) border-box;
+  box-shadow:0 16px 30px -16px rgba(30,35,64,.45),0 4px 10px -6px rgba(30,35,64,.2);}
+main.main-dash .module-card.dc-cm::before{display:none;}
+main.main-dash .module-card.dc-cm:hover{transform:none;filter:saturate(1.08);}
+.dc-cm .module-head{background:#F4F5F9;border-bottom:1px solid var(--cm-line);padding:16px 12px;text-align:center;}
+.dc-cm .module-head .mh-title{color:var(--cm-ink);font:700 15.5px 'Poppins','Inter',sans-serif;}
+.dc-cm .module-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:26px 14px 12px;text-align:center;}
+.dc-cm .module-icon{font-size:30px;line-height:1;}
+.dc-cm .dc-theme{font:600 15px/1.4 'Poppins','Inter',sans-serif;color:var(--cm-ink);}
+.dc-cm .dc-theme:not(.tk-pill)::after{content:"";display:block;width:38px;height:3px;border-radius:2px;background:var(--cm-gold);margin:12px auto 0;}
+.dc-cm .dc-status{padding:6px 16px 12px;font-size:13px;font-weight:600;color:var(--cm-ink2);}
+.dc-cm .dc-status b{color:var(--cm-ink);}
+.dc-cm .dc-status-empty{visibility:hidden;}
+.dc-cm .mc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--cm-line);}
+.dc-cm .mc-grid > button{margin:0;border:0;border-radius:0;box-shadow:none;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-family:inherit;}
+.dc-cm .mc-grid > .module-start-btn{grid-column:1 / -1;padding:12px 10px;font-size:15px;font-weight:800;background:#E9EBF2;color:var(--cm-ink);}
+.dc-cm .mc-grid > .module-start-btn:hover,.dc-cm:hover .mc-grid > .module-start-btn{background:#353B57;color:#fff;}
+.dc-cm .mc-grid > button:not(.module-start-btn){padding:10px 6px;font-size:12.5px;font-weight:700;background:#fff;color:var(--cm-ink2);border-top:1px solid var(--cm-line);}
+.dc-cm .mc-grid > button:not(.module-start-btn):first-of-type,.dc-cm .mc-grid > .module-topics-btn{border-right:1px solid var(--cm-line);}
+.dc-cm .mc-grid > button:not(.module-start-btn):hover{background:#F3F4F8;color:var(--cm-ink);}
+.dc-cm .mc-grid .module-topics-btn span{color:#4A5070;}
+.dc-cm .dc-foot{display:block;width:100%;margin:0;padding:12px 10px;border:0;border-top:1px solid var(--cm-line);border-radius:0;background:#FFF5E8;
+  color:var(--cm-ink);font:800 15px 'Poppins','Inter',sans-serif;cursor:pointer;}
+.dc-cm .dc-foot:hover{background:#FBE6CF;}
+.dc-cm.mc-done .module-head{background:#EAF4EE;}
+.dc-cm button:focus-visible{outline:none;box-shadow:inset 0 0 0 3px var(--cm-gold);}
+
+/* the stats band under the cards */
+.dash-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:16px 0 4px;padding:10px;border-radius:16px;
+  background:linear-gradient(135deg,var(--cm-navy) 0%,var(--cm-navy2) 100%);border:1px solid #2C335A;}
+.db-stat{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;padding:12px 16px;border-radius:12px;text-align:left;font:inherit;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;}
+.db-stat b{font:800 21px 'Poppins','Inter',sans-serif;color:#fff;}
+.db-stat span{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#C9CCDD;}
+.db-stat small{font-size:11.5px;color:#C9CCDD;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button.db-stat{cursor:pointer;}
+.db-score{background:rgba(219,132,55,.22);border-color:rgba(240,192,138,.55);}
+.db-score:hover{background:rgba(219,132,55,.36);}
+.db-score:focus-visible{outline:none;box-shadow:0 0 0 3px #F0C08A;}
+
+/* the footer */
+.footer-note.lsh-foot{margin-top:18px;padding:12px 16px;background:var(--cm-navy);border-top:3px solid var(--cm-gold);color:#C9CCDD;text-align:center;font-size:12px;}
+.footer-note.lsh-foot b{color:#fff;font-size:14px;}
+.footer-note.lsh-foot .mono{color:#9EA3BD;}
+@media (prefers-reduced-motion: reduce){ main.main-dash .module-card.dc-cm:hover{filter:none;} }
+
+/* wide: the dashboard runs nearly edge to edge, with bigger type on the cards and in the band */
+main.main-dash{max-width:none;padding-left:28px;padding-right:28px;}
+.dc-cm .module-head{padding:18px 14px;}
+.dc-cm .module-head .mh-title{font-size:18px;}
+.dc-cm .module-icon{font-size:40px;}
+.dc-cm .module-theme.tk-pill.dc-theme{font-size:17px;line-height:1.35;padding:11px 18px;margin:4px 6px 0;}
+.dc-cm .dc-status{font-size:15px;}
+.dc-cm .mc-grid > .module-start-btn{font-size:18px;padding:14px 10px;}
+.dc-cm .mc-grid > button:not(.module-start-btn){font-size:15px;padding:12px 6px;}
+.dc-cm .dc-foot{font-size:18px;padding:14px 10px;}
+.kt-card b{font-size:27px;} .kt-card small{font-size:18px;}
+.db-stat b{font-size:27px;} .db-stat span{font-size:13px;} .db-stat small{font-size:13px;}
+.footer-note.lsh-foot{font-size:13.5px;} .footer-note.lsh-foot b{font-size:15.5px;}
+@media (max-width:1500px){ .dc-cm .module-head .mh-title{font-size:16px;} .dc-cm .module-theme.tk-pill.dc-theme{font-size:15.5px;} .dc-cm .mc-grid > button:not(.module-start-btn){font-size:13.5px;} }
+.topbar-inner{max-width:none !important;padding-left:28px;padding-right:28px;}
+
+/* the top bar, the LSH standard (as on the CM course): the logo and the course's name at the left, the tabs in one
+   row at the right, with the soft light fade behind the logo */
+.topbar::before{content:"";position:absolute;left:0;top:0;bottom:0;pointer-events:none;width:calc(max(0px, (100vw - 1400px) / 2) + 150px);
+  background:linear-gradient(to right,rgba(210,223,239,.50) 0,rgba(210,223,239,.50) 26%,rgba(210,223,239,.41) 44%,rgba(210,223,239,.26) 60%,rgba(210,223,239,.13) 76%,rgba(210,223,239,.045) 88%,rgba(210,223,239,0) 100%);}
+.topbar::before{width:180px !important;}
+@media (min-width:1440px){
+  .topbar-inner{padding-top:14px;padding-bottom:14px;flex-wrap:nowrap;}
+  .brand{gap:26px;flex:0 0 auto;}
+  .brand-mark{height:52px;}
+  .topbar-right{display:flex;align-items:center;gap:14px;flex:1 1 auto;justify-content:flex-end;min-width:0;flex-wrap:nowrap;}
+  .topbar .nav{flex-wrap:nowrap;}
+  .nav button{white-space:nowrap;}
+}
+main.main-player ~ .footer-note.lsh-foot{margin-top:0;padding:5px 24px 7px;font-size:11.5px;} main.main-player ~ .footer-note.lsh-foot b{font-size:12.5px;}
+
+/* the name in the top bar (Trainer, or the trainee's name): an orange pill */
+.topbar .who{display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;background:#DB8437;color:#241304;font-size:13px;font-weight:800;box-shadow:0 2px 8px -2px rgba(219,132,55,.55);}
+
+/* one screen: on a laptop or desktop the whole dashboard fits the window (banner, Know Your Tools, the Day cards, the
+   stats band and the footer); the Day cards take whatever height is left */
+@media (min-width:1280px) and (min-height:640px){
+  main.main-dash{display:flex;flex-direction:column;padding-top:12px;padding-bottom:10px;}
+  main.main-dash .dash-top{display:flex;align-items:center;gap:20px;padding:10px 26px;margin-bottom:10px;}
+  main.main-dash .dash-hero{flex:1;min-width:0;grid-template-columns:64px minmax(0,1fr);gap:18px;}
+  main.main-dash .dash-hero-ribbon svg{max-width:58px;}
+  main.main-dash .dash-top .eyebrow{margin-bottom:4px;}
+  main.main-dash .dash-hero-row{flex:0 0 auto;flex-direction:column;align-items:flex-end;border-top:0;margin:0;padding:0;}
+  main.main-dash .kt-card{min-height:0;padding:12px 24px;margin-bottom:10px;}
+  main.main-dash .kt-card-ic{font-size:34px;}
+  main.main-dash .kt-card b{font-size:23px;} main.main-dash .kt-card small{font-size:16px;}
+  main.main-dash .kt-card .btn.btn-ghost{padding:9px 28px;}
+  main.main-dash .module-grid{flex:1 0 auto;align-items:stretch;gap:16px;}
+  main.main-dash .dc-cm .module-head{padding:12px;}
+  main.main-dash .dc-cm .module-body{padding:12px 12px 6px;gap:8px;}
+  main.main-dash .dc-cm .module-icon{font-size:34px;}
+  main.main-dash .dc-cm .module-theme.tk-pill.dc-theme{padding:8px 16px;}
+  main.main-dash .dc-cm .dc-status{padding:4px 16px 8px;}
+  main.main-dash .dc-cm .mc-grid > .module-start-btn{padding:11px 10px;}
+  main.main-dash .dc-cm .mc-grid > button:not(.module-start-btn){padding:9px 6px;}
+  main.main-dash .dc-cm .dc-foot{padding:11px 10px;}
+  main.main-dash .dash-band{margin:10px 0 0;padding:8px;gap:8px;}
+  main.main-dash .db-stat{padding:8px 14px;}
+  main.main-dash .db-stat b{font-size:23px;}
+  main.main-dash ~ .footer-note.lsh-foot{margin-top:0;padding:8px 16px;}
+}
+/* a shorter laptop screen: the same dashboard, tighter */
+@media (min-width:1280px) and (min-height:560px) and (max-height:820px){
+  main.main-dash{padding-top:8px;padding-bottom:6px;}
+  main.main-dash .dash-top{padding:6px 22px;margin-bottom:8px;}
+  main.main-dash .dash-top .eyebrow{display:none;}
+  main.main-dash .dash-hero-ribbon svg{max-width:44px;}
+  main.main-dash .dash-hero h1{font-size:24px;}
+  main.main-dash .kt-card{padding:8px 20px;margin-bottom:8px;}
+  main.main-dash .kt-card-ic{font-size:26px;}
+  main.main-dash .kt-card b{font-size:19px;} main.main-dash .kt-card small{font-size:14px;}
+  main.main-dash .kt-card .btn.btn-ghost{padding:6px 22px;font-size:15px;}
+  main.main-dash .module-grid{gap:12px;}
+  main.main-dash .dc-cm{border-width:5px;}
+  main.main-dash .dc-cm .module-head{padding:8px 10px;}
+  main.main-dash .dc-cm .module-head .mh-title{font-size:15px;}
+  main.main-dash .dc-cm .module-body{padding:8px 10px 4px;gap:6px;}
+  main.main-dash .dc-cm .module-icon{font-size:26px;}
+  main.main-dash .dc-cm .module-theme.tk-pill.dc-theme{font-size:14.5px;padding:6px 12px;}
+  main.main-dash .dc-cm .dc-status{padding:2px 12px 6px;font-size:13.5px;}
+  main.main-dash .dc-cm .dc-status-empty{display:none;}
+  main.main-dash .dc-cm .mc-grid > .module-start-btn{padding:8px 10px;font-size:16px;}
+  main.main-dash .dc-cm .mc-grid > button:not(.module-start-btn){padding:7px 6px;font-size:13px;}
+  main.main-dash .dc-cm .dc-foot{padding:8px 10px;font-size:16px;}
+  main.main-dash .dash-band{margin-top:8px;padding:6px;gap:6px;}
+  main.main-dash .db-stat{padding:6px 12px;}
+  main.main-dash .db-stat b{font-size:19px;} main.main-dash .db-stat span{font-size:11.5px;} main.main-dash .db-stat small{display:none;}
+  main.main-dash ~ .footer-note.lsh-foot{padding:5px 16px;font-size:12px;} main.main-dash ~ .footer-note.lsh-foot b{font-size:13px;}
+}
+/* below 1440px the tabs take a second row; on a short screen keep the bar to one row by letting the tabs shrink */
+@media (min-width:1280px) and (max-width:1439px) and (max-height:820px){
+  .topbar-inner{flex-wrap:nowrap;padding-top:8px;padding-bottom:8px;} .topbar-right{flex-wrap:nowrap;} .topbar .nav{flex-wrap:nowrap;}
+  .brand{gap:12px;} .brand-mark{height:38px;} .brand-text b{font-size:13px;}
+  .topbar .who{display:none;}
+  .nav button{padding:7px 7px;font-size:12.5px;white-space:nowrap;}
+}
+
+/* the theme tile on each Day card: a gold gradient with bold type */
+.dc-cm .module-theme.tk-pill.dc-theme{--tk-ink:#5A2E08;
+  background:linear-gradient(135deg,#FFF6EA 0%,#FBDDB8 45%,#F4B878 100%) padding-box,
+             linear-gradient(120deg,#C8702A 0%,#F0C08A 50%,#A8692F 100%) border-box;}
+.dc-cm .module-theme.tk-pill.dc-theme .tk-name{font-weight:900;}
+.dc-cm.mc-done .module-theme.tk-pill.dc-theme{--tk-ink:#0B4A30;
+  background:linear-gradient(135deg,#F1FBF5 0%,#CDEFDB 45%,#9FDDB9 100%) padding-box,
+             linear-gradient(120deg,#11734b 0%,#8FD6AE 50%,#0B5A3A 100%) border-box;}
+.dc-cm .module-head .mh-title{font-weight:800;}
+.dc-cm .mc-grid > .module-start-btn,.dc-cm .dc-foot{font-weight:900;}
+.dc-cm .mc-grid > button:not(.module-start-btn){font-weight:800;}
+
+/* the top bar's buttons: orange pills (the page you are on, solid gold: the Training Portal's gold button) */
+.topbar .nav{background:transparent;gap:6px;padding:0;}
+.topbar .nav a.nav-out{display:inline-flex;align-items:center;margin-left:0;padding:8px 12px;border-radius:999px !important;border:1.5px solid rgba(240,192,138,.75) !important;background:rgba(219,132,55,.16) !important;color:#fff !important;font-weight:700;text-decoration:none;}
+.topbar .nav a.nav-out:hover{background:rgba(219,132,55,.38) !important;border-color:#F0C08A !important;}
+.topbar .nav button{border-radius:999px !important;border:1.5px solid rgba(240,192,138,.75) !important;background:rgba(219,132,55,.16) !important;color:#fff !important;font-weight:700;}
+.topbar .nav button:not(.active):hover{background:rgba(219,132,55,.38) !important;border-color:#F0C08A !important;}
+.topbar .nav button.active{background:var(--btn-gold) !important;border-color:#e0a43a !important;color:var(--btn-gold-ink) !important;font-weight:800;}
+.topbar .nav button:focus-visible{outline:none;box-shadow:0 0 0 3px #F0C08A;}
+/* the theme tile's words: solid black, as bold as the font goes (no shine over them) */
+.dc-cm .module-theme.tk-pill.dc-theme .tk-name,.dc-cm.mc-done .module-theme.tk-pill.dc-theme .tk-name{background:none;-webkit-background-clip:border-box;background-clip:border-box;
+  color:#0B0F1E;-webkit-text-fill-color:#0B0F1E;font-weight:900;animation:none;letter-spacing:.005em;}
+/* the top bar's buttons always sit at the right, whatever the window's width */
+.topbar-right{flex:1 1 auto;justify-content:flex-end !important;margin-left:auto;}
+.topbar .nav{justify-content:flex-end;}
+
+/* Admin: the batch scorecard (one row per trainee) and the trainee panel */
+.ad-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.ad-tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1.5px solid #D6DAE5;border-radius:14px;background:#fff;padding:12px 16px;font:inherit;cursor:pointer;text-align:left;}
+.ad-tile b{font:800 28px 'Poppins','Inter',sans-serif;color:#1E2340;} .ad-tile span{font-size:13px;font-weight:700;color:#4A5160;}
+.ad-tile.on{border-color:#DB8437;box-shadow:0 0 0 3px rgba(219,132,55,.2);background:#FFFBF5;}
+.ad-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;} .ad-bar h2{margin:0;flex:1;}
+.ad-bar .ad-q,.ad-bar select{font:inherit;font-size:14px;padding:8px 12px;border:1.5px solid #D6DAE5;border-radius:10px;background:#fff;}
+.ad-bar .ad-q{min-width:220px;}
+.ad-table td{vertical-align:middle;}
+.ad-name b{display:block;color:#1E2340;} .ad-name small,.ad-day small{display:block;font-size:12px;font-weight:600;color:#5A6078;margin-top:2px;}
+.ad-day{text-align:center;} .ad-table th{text-align:center;} .ad-table th:first-child,.ad-table th:nth-last-child(2){text-align:left;}
+.ad-next{font-size:13px;font-weight:600;color:#2A3048;max-width:300px;}
+.ad-off td{opacity:.55;}
+.ad-links summary{cursor:pointer;font-size:16px;color:#1E2340;padding:4px 0;} .ad-links[open] summary{margin-bottom:10px;}
+.ad-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.ad-tabs button{font:inherit;font-size:14px;font-weight:700;border-radius:999px;padding:7px 14px;border:1.5px solid #D6DAE5;background:#fff;color:#1E2340;cursor:pointer;}
+.ad-tabs button.on{background:#1E2340;border-color:#1E2340;color:#fff;}
+.overlay-card.ad-panel{width:min(1240px,96vw);max-width:none;}
+.ad-desk select{font:inherit;padding:8px 12px;border-radius:10px;border:1.5px solid #D6DAE5;}
+@media (max-width:900px){ .ad-tiles{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.dc-cm .dc-foot.dc-locked{background:#F1F2F7;color:#5A6078;cursor:help;}
+/* Admin → 🎬 Unlock videos */
+.vl-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;}
+.vl-day h4{margin:0 0 8px;font-size:15px;color:#1E2340;}
+.vl-item{display:flex;gap:10px;align-items:flex-start;border:2px solid #D6DAE5;border-radius:12px;padding:12px;margin-bottom:8px;background:#fff;cursor:pointer;font-size:14px;color:#262B45;}
+.vl-item input{width:18px;height:18px;margin-top:2px;accent-color:#DB8437;flex:none;}
+.vl-item.on{border-color:#DB8437;background:#FFF6EC;}
+.vl-item b{display:block;color:#1E2340;font-size:15px;} .vl-item small{display:block;margin-top:3px;font-weight:700;color:#A4470F;}

@@ -1,0 +1,8 @@
+worker.js
+wrangler.json
+.assetsignore
+*.md
+.github
+.git
+cards/build_pages.py
+plan
