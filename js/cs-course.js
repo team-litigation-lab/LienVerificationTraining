@@ -68,6 +68,8 @@ window.LN_COURSE = {
         { id: "d1-deck", kind: "slides", deck: "lv-day1", title: "Medical Lien Balance Verification Training \u00b7 Day 1", slides: 59 },
         { id: "d1-video", kind: "video", title: "Liens, Lien Holders & Reductions",
           link: "https://drive.google.com/file/d/1rmdqifC5m_3c9FYDZkrzsUampVKmUMaY/view" },
+        { id: "d1-check", kind: "practice", sim: "lv1-check", title: "Knowledge Check", label: "Knowledge Check", note: "Questions on today's lesson, scored out of 100, with feedback on every answer." },
+        { id: "d1-sim", kind: "practice", sim: "lv1-sim", title: "Practical Simulation", label: "Simulation", note: "Work today's lesson on a case, step by step, scored out of 100." },
         { id: "d1-handouts", kind: "files", title: "Handouts", label: "Handouts",
           note: "The full deck, to keep and read after the session.",
           items: [
@@ -130,6 +132,8 @@ window.LN_COURSE = {
         { id: "d2-lv-demo", kind: "video", title: "Recorded Demo: Sending a Lien Balance Verification Request", label: "LV Recorded Demo",
           note: "Watch this while you wait for your turn to perform your own LV demo.",
           link: "https://drive.google.com/file/d/1Q55zhsC-Oi2A1kQSo-CoBr3C7DsFmFmv/view" },
+        { id: "d2-check", kind: "practice", sim: "lv2-check", title: "Knowledge Check", label: "Knowledge Check", note: "Questions on today's lesson, scored out of 100, with feedback on every answer." },
+        { id: "d2-sim", kind: "practice", sim: "lv2-sim", title: "Practical Simulation", label: "Simulation", note: "Work today's lesson on a case, step by step, scored out of 100." },
         { id: "d2-handouts", kind: "files", title: "Handouts", label: "Handouts",
           note: "The full deck, to keep and read after the session.",
           items: [
@@ -157,6 +161,8 @@ window.LN_COURSE = {
       ],
       modules: [
         { id: "d3-deck", kind: "slides", deck: "lv-day3", title: "Medical Lien Balance Verification Training \u00b7 Day 3", slides: 48 },
+        { id: "d3-check", kind: "practice", sim: "lv3-check", title: "Knowledge Check", label: "Knowledge Check", note: "Questions on today's lesson, scored out of 100, with feedback on every answer." },
+        { id: "d3-sim", kind: "practice", sim: "lv3-sim", title: "Practical Simulation", label: "Simulation", note: "Work today's lesson on a case, step by step, scored out of 100." },
         { id: "d3-handouts", kind: "files", title: "Handouts", label: "Handouts",
           note: "The full deck, to keep and read after the session.",
           items: [
