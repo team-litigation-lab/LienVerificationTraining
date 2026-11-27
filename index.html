@@ -885,7 +885,7 @@ function statsBand(sc){
 function viewDashboard(){
   const sc = state.isAdmin ? null : CSScore.compute(state.trainee, state.progress);
   return dashBanner() + ktBanner() + `<div class="module-grid day-grid" style="--days:${COURSE.days.length}">${COURSE.days.map((d) => {
-    const st = state.isAdmin ? "new" : dayStatus(d), line = dayStatusLine(d, st, sc), f = footModule(d);
+    const st = state.isAdmin ? "new" : dayStatus(d), line = dayStatusLine(d, st, sc), f = footModule(d) || d.modules.find((m) => m.kind === "files");   // every card ends on the same row: Practice, Video, or else the Handouts
     return `<article class="module-card day-card dc-cm mc-${st}" id="day-${d.day}">
       <div class="module-head"><div class="mh-title">Day ${d.day} · ${esc(d.title)}</div></div>
       <div class="module-body">
@@ -898,7 +898,7 @@ function viewDashboard(){
         <button class="module-topics-btn" onclick="showTopics(${d.day})">☰ Topics <span>· ${d.topics.length}</span></button>
         <button class="dc-sc-btn" onclick="${state.isAdmin ? "CSScore.openAdmin()" : "goto('scorecard')"}">🏅 Scorecard</button>
       </div>
-      ${f ? (f.kind === "video" && !CSVideos.unlocked(f) ? `<button class="dc-foot dc-locked" onclick="CSVideos.why()" title="Opens after the discussion, when your trainer unlocks it">🔒 Video</button>` : `<button class="dc-foot" onclick="openModule(${d.day},'${f.id}')">${f.kind === "video" ? "▶ Video" : "🧪 Practice"}</button>`) : ""}
+      ${f ? (f.kind === "video" && !CSVideos.unlocked(f) ? `<button class="dc-foot dc-locked" onclick="CSVideos.why()" title="Opens after the discussion, when your trainer unlocks it">🔒 Video</button>` : `<button class="dc-foot" onclick="openModule(${d.day},'${f.id}')">${f.kind === "video" ? "▶ Video" : f.kind === "files" ? "📄 Handouts" : "🧪 Practice"}</button>`) : ""}
     </article>`;
   }).join("")}</div>` + statsBand(sc);
 }
