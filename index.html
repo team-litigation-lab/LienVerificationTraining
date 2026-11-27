@@ -593,7 +593,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
    repo) expects of an engine: state, render(), goto(), authStatus(), logout(), setAdminToken(),
    setTraineeToken(), submitLogin() and resumeWhereLeftOff().
    ============================================================ */
-const APP_BUILD = "2026.11.27-16";
+const APP_BUILD = "2026.11.27-17";
 const PORTAL_HOME = "https://cm-training-activity.pages.dev/";
 const LOGO_FULL_SRC = "/js/lsh-logo-dark.png";
 const COURSE = window.LN_COURSE;
@@ -632,6 +632,33 @@ async function api(path, body){
   if(!r.ok) throw new Error(j.error || ("Request failed (" + r.status + ")"));
   return j;
 }
+/* ---------- 🔓 the sign-in lasts until 8 hours with no activity ----------
+   A token is good for 8 hours (SESSION_IDLE_HOURS in worker.js). While this page is open it is renewed every few
+   minutes, so closing the tab or the browser signs nobody out, and nobody types the password again while they use
+   the course. Once 8 hours pass with no page open the token has run out: the page signs out (the Worker refuses it). */
+const SESSION_IDLE_MS = 8 * 3600 * 1000, SESSION_RENEW_MS = 5 * 60 * 1000;
+function tokenExp(tok){ const p = String(tok || "").split("."); return p.length === 4 ? Number(p[2]) || 0 : 0; }
+let renewing = false;
+async function renewSession(){
+  if(renewing || !state.secure) return;
+  renewing = true;
+  try{
+    for(const [tok, set] of [[state.adminToken, setAdminToken], [state.authToken, setTraineeToken]]){
+      if(!tok) continue;
+      const left = tokenExp(tok) - Date.now();
+      if(left <= 0){ await logout(); return; }                                       // 8 hours with no activity: signed out
+      if(left < SESSION_IDLE_MS - SESSION_RENEW_MS || left > SESSION_IDLE_MS){          // not renewed in the last few minutes
+        const r = await fetch("/api/auth/refresh", {method:"POST", headers:{"Content-Type":"application/json", Authorization:"Bearer " + tok}, body:"{}"});
+        if(r.status === 401){ await logout(); return; }                              // run out, or the secret changed: sign in again
+        const j = await r.json().catch(() => ({}));
+        if(j.token && (state.adminToken === tok || state.authToken === tok)) set(j.token);
+      }
+    }
+  }catch(e){ /* offline: try again on the next tick */ }
+  finally{ renewing = false; }
+}
+setInterval(renewSession, 60 * 1000);
+document.addEventListener("visibilitychange", () => { if(!document.hidden) renewSession(); });
 const kvGet = async (key) => { const j = await api("/api/storage/get", {key}); try{ return j.value ? JSON.parse(j.value) : null; }catch(e){ return null; } };
 const kvSet = (key, value) => api("/api/storage/set", {key, value: JSON.stringify(value)});
 
@@ -1343,6 +1370,7 @@ function render(){
   const t = stored(TOKEN_KEYS.trainee); if(t) setTraineeToken(t);
   state.resumePending = true;
   await window.portalGate.init();   // asks /api/auth/status, then signs in whoever arrived from the Portal with a ticket
+  await renewSession();   // a token that ran out (8 hours with no activity) signs out here, before the dashboard is drawn
   // Open mode (no MASTER_ADMIN_PASSWORD on the Worker yet): the Worker treats every request as an admin's.
   if(!state.secure && !state.traineeId){ state.isAdmin = true; }
   await loadCourseLinks();

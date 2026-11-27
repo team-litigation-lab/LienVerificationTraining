@@ -77,5 +77,24 @@ const ticket = (t, secret = SECRET) => { const p = b64u(JSON.stringify(t)); retu
   r = await call(base, '/api/storage/get', { key: 'release:jane-doe--b100926' }, tTok); assert.equal(r.status, 200);
   r = await call(base, '/api/checkin', { training: 'Lien Verification Training' }, tTok);
   assert.equal(r.j.ok, true);
+  // 🔓 A sign-in lasts until 8 hours with no activity: closing the tab keeps it (the token is in localStorage), a token
+  // 7 hours old still works and is renewed by /api/auth/refresh (an open page asks every few minutes), 9 hours idle is signed out.
+  {
+    const realNow = Date.now, t0 = realNow(), at = (h) => { Date.now = () => t0 + h * 3600 * 1000; };
+    try {
+      const own = (tok) => call(base, '/api/storage/get', { key: 'trainee:jane-doe--b100926' }, tok);
+      at(7); assert.equal((await own(tTok)).status, 200, 'a trainee 7 hours idle is still signed in');
+      r = await call(base, '/api/storage/list', { prefix: 'trainee:' }, aTok); assert.equal(r.status, 200, 'an admin 7 hours idle is still signed in');
+      r = await call(base, '/api/auth/refresh', {}, tTok); assert.equal(r.status, 200); const tTok2 = r.j.token;
+      r = await call(base, '/api/auth/refresh', {}, aTok); assert.equal(r.status, 200); const aTok2 = r.j.token;
+      at(9);
+      assert.equal((await own(tTok)).status, 401, 'a trainee 9 hours idle is signed out');
+      r = await call(base, '/api/storage/list', { prefix: 'trainee:' }, aTok); assert.equal(r.status, 401, 'an admin 9 hours idle is signed out');
+      r = await call(base, '/api/auth/refresh', {}, aTok); assert.equal(r.status, 401, 'a token idle 9 hours cannot be renewed');
+      assert.equal((await own(tTok2)).status, 200, 'a trainee active at hour 7 is still signed in at hour 9');
+      r = await call(base, '/api/storage/list', { prefix: 'trainee:' }, aTok2); assert.equal(r.status, 200, 'an admin active at hour 7 is still signed in at hour 9');
+      at(7 + 9); assert.equal((await own(tTok2)).status, 401, '9 hours after the last renewal: signed out');
+    } finally { Date.now = realNow; }
+  }
   console.log('OK: single sign-on and storage rules hold.');
 })().catch((e) => { console.error(e); process.exit(1); });
